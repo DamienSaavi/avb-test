@@ -47,8 +47,10 @@ export function Contact({ contact, deleteContact, saveChanges, className }) {
             saveChanges({
                 firstName: validFirstName,
                 lastName: validLastName,
-                emails: validEmails
+                emails: validEmails,
+                id: contact.id
             })
+            setEditing(false)
         }
     }
 

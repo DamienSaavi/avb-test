@@ -34,9 +34,9 @@ export function formatEmails(emails) {
         }
     }
 
-    for (let i = 0; i < formattedEmails.length-1; i++) {
+    for (let i = 0; i < formattedEmails.length - 1; i++) {
         for (let j = i + 1; j < formattedEmails.length; j++) {
-            if (formattedEmails[i].toUpperCase() === formattedEmails[j].toUpperCase()) {
+            if (formattedEmails[i].toLowerCase() === formattedEmails[j].toLowerCase()) {
                 alert('Cannot save contact: email address ' + formattedEmails[i] + ' already exists for this contact.')
                 return false
             }
@@ -49,6 +49,7 @@ export function formatEmails(emails) {
 // format and validate email
 function formatEmail(email) {
     let formattedEmail = email.trim()
+    formattedEmail = formattedEmail.toLowerCase()
 
     if (email === '') {
         alert('Cannot save contact: email address cannot be empty.')
