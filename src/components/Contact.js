@@ -8,6 +8,7 @@ export function Contact({ contact, deleteContact, saveChanges, className }) {
     const [emails, setEmails] = useState([])
     const [editing, setEditing] = useState(false)
 
+    // load contact passed as param
     function initContact() {
         setFirstName(contact.firstName)
         setLastName(contact.lastName)
@@ -31,6 +32,7 @@ export function Contact({ contact, deleteContact, saveChanges, className }) {
         setEmails([...updatedEmails])
     }
 
+    // validate contact info and save formatted information 
     function onSaveChanges() {
         const validFirstName = formatName(firstName)
         if (!validFirstName) return
@@ -50,6 +52,7 @@ export function Contact({ contact, deleteContact, saveChanges, className }) {
         }
     }
 
+    // update contact info states on contact param change
     useEffect(() => {
         initContact()
     }, [contact])

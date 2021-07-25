@@ -1,10 +1,11 @@
 const emailRegex = /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/
 
-export function formatName(name = '') {
+// format and validate name
+export function formatName(name) {
     let formattedName = name.trim()
     formattedName.replace(/\s{2,}/, ' ')
 
-    if (formattedName.length == 0) {
+    if (formattedName.length === 0) {
         alert('Cannot save contact: first and last name cannot be empty.')
         return false
     }
@@ -21,6 +22,7 @@ export function formatName(name = '') {
     return formattedName
 }
 
+// format and validate all emails
 export function formatEmails(emails) {
     const formattedEmails = []
     for (let i = 0; i < emails.length; i++) {
@@ -44,6 +46,7 @@ export function formatEmails(emails) {
     return formattedEmails
 }
 
+// format and validate email
 function formatEmail(email) {
     let formattedEmail = email.trim()
 

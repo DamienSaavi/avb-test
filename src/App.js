@@ -15,15 +15,17 @@ function App() {
   const [selectedContact, setSelectedContact] = useState(null)
   const [loadingContact, setLoadingContact] = useState(false)
 
-
-  useEffect(async () => {
+  // load all contacts upon startup
+  useEffect(() => {
     loadContacts()
   }, [])
 
-  useEffect(async () => {
+  // set loading state to false once contact information is fetched
+  useEffect(() => {
     setLoadingContact(false)
   }, [selectedContact])
 
+  // load all contacts using paginated api endpoint and sort alphabetically
   async function loadContacts() {
     let page = 1, itemsPerPage = 20;
     const contacts = []
@@ -47,7 +49,7 @@ function App() {
     contacts.sort((a, b) => {
       const contact1 = a.firstName.concat(a.lastName)
       const contact2 = b.firstName.concat(b.lastName)
-      console.log(contact1.toUpperCase() > contact2.toUpperCase())
+      
       if (contact1.toUpperCase() > contact2.toUpperCase())
         return 1
       else
@@ -57,6 +59,8 @@ function App() {
     setContacts(contacts)
   }
 
+  // fetch contact by ID and set as selected contact
+  // if no id is supplied, a new empty contact is created and selected for editing
   async function selectContact(id) {
     setLoadingContact(true)
     const contact = id ? await getContactById(id) : {
@@ -68,6 +72,7 @@ function App() {
     setSelectedContact(contact)
   }
 
+  // delete selected contact.
   async function deleteSelectedContact() {
     if (selectedContact.id)
       if (window.confirm('Do you wish to delete ' + selectedContact.firstName + ' ' + selectedContact.lastName + ' from your contact list?'))
@@ -79,6 +84,7 @@ function App() {
     loadContacts()
   }
 
+  // save changes made to an existing contact or save new contact (when selected contact has no ID)
   async function saveChanges(contact) {
     if (contact.id)
       await modifyContact(contact.id, contact)

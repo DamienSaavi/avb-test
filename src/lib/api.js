@@ -1,4 +1,5 @@
-async function getContacts(page, itermsPerPage) {
+// get contacts by page
+export async function getContacts(page, itermsPerPage) {
     const response = await fetch(`https://avb-contacts-api.herokuapp.com/contacts/paginated?itemsPerPage=${itermsPerPage}&page=${page}`, {
         method: 'GET',
         headers: {
@@ -14,8 +15,8 @@ async function getContacts(page, itermsPerPage) {
     return { contacts, totalItems }
 }
 
-
-async function getContactById(contactId) {
+// fetch contact by ID and return info if successful
+export async function getContactById(contactId) {
     const response = await fetch(`https://avb-contacts-api.herokuapp.com/contacts/${contactId}`, {
         method: 'GET',
         redirect: 'follow'
@@ -27,8 +28,8 @@ async function getContactById(contactId) {
     return { id, firstName, lastName, emails }
 }
 
-
-async function modifyContact(contactId, contact) {
+// edit contact and return info if successful
+export async function modifyContact(contactId, contact) {
     const response = await fetch(`https://avb-contacts-api.herokuapp.com/contacts/${contactId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -42,7 +43,7 @@ async function modifyContact(contactId, contact) {
     return { id, firstName, lastName, emails }
 }
 
-async function deleteContact(contactId) {
+export async function deleteContact(contactId) {
     const responseCode = await fetch(`https://avb-contacts-api.herokuapp.com/contacts/${contactId}`, {
         method: 'DELETE',
         redirect: 'follow'
@@ -53,8 +54,8 @@ async function deleteContact(contactId) {
     return (responseCode === 200)
 }
 
-
-async function addContact(contact) {
+// add contact and return info if successful
+export async function addContact(contact) {
     const response = await fetch(`https://avb-contacts-api.herokuapp.com/contacts`, {
         method: 'POST',
         headers: {
@@ -66,15 +67,7 @@ async function addContact(contact) {
     })
         .then(res => res.json())
         .catch(error => console.error('ERROR: ', error))
-    console.log(response)
+        
     const { id, firstName, lastName, emails } = response || {}
     return { id, firstName, lastName, emails }
-}
-
-module.exports = {
-    addContact,
-    deleteContact,
-    modifyContact,
-    getContactById,
-    getContacts
 }

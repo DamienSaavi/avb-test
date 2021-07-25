@@ -6,12 +6,12 @@ export function Sidebar({ contacts, selectContact, selectedId, loading, classNam
     const [searchInput, setSearchInput] = useState('')
     const [searchTerms, setSearchTerms] = useState([])
 
-    function updateSearchTerms() {
-        const terms = searchInput.split(' ').filter(Boolean)
-        setSearchTerms([...terms])
-    }
-
+    // split search input into an array of search terms
     useEffect(() => {
+        function updateSearchTerms() {
+            const terms = searchInput.split(' ').filter(Boolean)
+            setSearchTerms([...terms])
+        }
         updateSearchTerms()
     }, [searchInput])
 
@@ -36,16 +36,19 @@ export function Sidebar({ contacts, selectContact, selectedId, loading, classNam
                 />
             </div>
             <ul className='overflow-y-auto h-full'>
-                {contacts.filter(contact => searchTerms.every(term => {
-                    const fullName = contact.firstName + ' ' + contact.lastName
-                    return fullName.toLowerCase().includes(term.toLowerCase())
-                })
-                ).map(contact => {
-                    return <ContactRow
-                        className={`${contact.id == selectedId ? 'bg-primary text-white' : 'hover:bg-blue-100'} px-3 py-2 new-row-animated`}
-                        selectContact={(id) => selectContact(id)}
-                        key={contact.id} contact={contact} />
-                })}
+
+                {
+                    // display only contacts that contain all search terms
+                    contacts.filter(contact => searchTerms.every(term => {
+                        const fullName = contact.firstName + ' ' + contact.lastName
+                        return fullName.toLowerCase().includes(term.toLowerCase())
+                    })
+                    ).map(contact => {
+                        return <ContactRow
+                            className={`${contact.id === selectedId ? 'bg-primary text-white' : 'hover:bg-blue-100'} px-3 py-2 new-row-animated`}
+                            selectContact={(id) => selectContact(id)}
+                            key={contact.id} contact={contact} />
+                    })}
             </ul>
         </div>
     )
