@@ -18,6 +18,9 @@ function App() {
   // load all contacts upon startup
   useEffect(() => {
     loadContacts()
+
+    // update contact list in case another client makes changes
+    setInterval(() => { loadContacts() }, 5000)
   }, [])
 
   // set loading state to false once contact information is fetched
@@ -49,7 +52,7 @@ function App() {
     contacts.sort((a, b) => {
       const contact1 = a.firstName.concat(a.lastName)
       const contact2 = b.firstName.concat(b.lastName)
-      
+
       if (contact1.toUpperCase() > contact2.toUpperCase())
         return 1
       else
@@ -63,13 +66,21 @@ function App() {
   // if no id is supplied, a new empty contact is created and selected for editing
   async function selectContact(id) {
     setLoadingContact(true)
-    const contact = id ? await getContactById(id) : {
-      firstName: '',
-      lastName: '',
-      emails: []
-    }
 
-    setSelectedContact(contact)
+    if (id) {
+      const contact = await getContactById(id)
+      if (contact.id)
+        setSelectedContact(contact)
+      else
+        alert('Cannot fetch data: contact no longer exists in database.')
+    } else {
+      const contact = id ? await getContactById(id) : {
+        firstName: '',
+        lastName: '',
+        emails: []
+      }
+      setSelectedContact(contact)
+    }
   }
 
   // delete selected contact.
@@ -86,9 +97,13 @@ function App() {
 
   // save changes made to an existing contact or save new contact (when selected contact has no ID)
   async function saveChanges(contact) {
-    if (contact.id)
-      await modifyContact(contact.id, contact)
-    else {
+    if (contact.id) {
+      const res = await modifyContact(contact.id, contact)
+      if (!res.id) {
+        alert('Cannot save changes: selected user no longer exists in database.')
+        setSelectedContact(null)
+      }
+    } else {
       setSelectedContact(await addContact(contact))
     }
     loadContacts()
@@ -96,10 +111,10 @@ function App() {
 
   return (
     <div
-      className="App w-screen h-screen p-32 bg-gradient-to-t from-indigo-500 to-indigo-400">
+      className="App w-screen h-screen p-32 px-8 bg-gradient-to-t from-indigo-500 to-indigo-400">
       <div className='bg-white flex flex-row min-w-min mx-auto max-w-5xl h-full max-h-full shadow-2xl'>
         <Sidebar
-          className='w-56'
+          className='w-56 flex-shrink-0 flex-grow-0'
           contacts={allContacts}
           selectContact={selectContact}
           selectedId={selectedContact?.id}
