@@ -90,19 +90,19 @@ export function Contact({ contact, deleteContact, saveChanges, className }) {
                     <label className='text-sm mb-1 opacity-80' htmlFor='contact-emails'>Emails</label>
                     <ul className='flex flex-col gap-1' id='contact-emails'>
                         {emails?.map((email, i) =>
-                            <li key={i} className={`flex flex-row items-end`}>
-                                <button
-                                    title="Delete email"
-                                    disabled={!editing}
-                                    className={`absolute transition-all transform ${editing ? 'scale-100' : ' scale-0 opacity-0 select-none'} place-self-center`}
-                                    onClick={() => { deleteEmail(i) }}
-                                ><DeleteIcon className='h-7' /></button>
+                            <li key={i} className={`flex flex-row`}>
                                 <input
                                     key={i.toString()}
                                     type='text' value={emails[i]}
                                     onChange={event => updateEmail(i, event.target.value)}
                                     disabled={!editing}
-                                    className={`transition-all transform w-full border ${editing ? ' translate-x-8 border-input bg-light focus:border-primary' : 'border-transparent bg-transparent'} px-2 py-1 text-lg outline-none`} />
+                                    className={`email-row transition-all w-full border ${editing ? ' border-input bg-light focus:border-primary' : 'border-transparent bg-transparent'} px-2 py-1 text-lg outline-none`} />
+                                <button
+                                    title="Delete email"
+                                    disabled={!editing}
+                                    className={`${editing ? '' : 'hidden'} self-stretch btn-email-delete transition-all transform place-self-center`}
+                                    onClick={() => { deleteEmail(i) }}
+                                ><DeleteIcon className='px-2 h-7' /></button>
                             </li>
                         )}
                         <button

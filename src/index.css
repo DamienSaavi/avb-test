@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.btn-email-delete {
+    opacity: 0;
+}
+
+.email-row:hover + .btn-email-delete, .btn-email-delete:hover{
+    opacity: 1;
+}
+
 .new-row-animated {
     height: 2.5rem;
     opacity: 1;
